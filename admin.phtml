@@ -1,0 +1,169 @@
+<main class="container">
+    <h2><i class="fas fa-cogs"></i>Panneau d'administration</h2>
+    <h3 class="noMargin"><a href="form.php" class="link write big">Rédiger un nouvel article</a></h3>
+    
+<!----------------List Article--------------->
+
+    <table class='listArticle listAdmin'>
+        <caption>Liste des articles</caption>
+        <thead>
+            <tr>
+                <th class='mediumColumn'>Titre</th>
+                <th class='largeColumn'>Article</th>
+                <th class='mediumColumn'>Auteur</th>
+                <th class='mediumColumn'>Catégorie</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($listArticles as $listArticle) { ?>
+                <tr>
+                    <td class='mediumColumn'><?= htmlspecialchars($listArticle['Title'])?></td>
+
+                    <?php if ( strlen($listArticle['Contents']) < 15 ) { ?>
+                        <td class='largeColumn'><?= htmlspecialchars($listArticle['Contents'])?></td>
+                    <?php } else { ?>
+                        <td class='largeColumn'><?= htmlspecialchars(substr($listArticle['Contents'],0,50))?> [...]</td>
+                    <?php } ?>
+
+                    <td class='mediumColumn'><?= $listArticle['FirstName'].' '.$listArticle['LastName']?></td>
+                    <td class='mediumColumn'><?= $listArticle['Name']?></td>
+                    <td class='smallColumn borderTop'><a href="modifArticle.php?Id=<?=$listArticle['Id']?>"><i class="fas fa-pencil-alt"></i></a></td>
+                    <td class='smallColumn borderTop'><a href="deleteArticle.php?Post_Id=<?=$listArticle['Id']?>"><i class="fas fa-times"></i></a></td>
+                </tr>
+            <?php } ?>
+        </tbody>  
+    </table>
+
+<div class="blockAuthor">
+
+    <h3 class="noMargin"><a id="addAuthor" class="link write big">Ajouter un auteur</a></h3>
+
+    <!----------------List Author--------------->
+
+        <table class='listAuthor listAdmin'>
+            <caption>Liste des auteurs</caption>
+            <thead>
+                <tr>
+                    <th class='mediumColumn'>Prénom</th>
+                    <th class='mediumColumn'>Nom</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($listAuthors as $listAuthor) { ?>
+                    <tr>
+                        <td class='mediumColumn'>
+                            <?= htmlspecialchars($listAuthor['FirstName'])?>
+                        </td>
+                        <td class='mediumColumn'>
+                            <?= htmlspecialchars($listAuthor['LastName'])?>
+                        </td>
+                        <td class='smallColumn borderTop'>
+                            <a href="deleteArticle.php?Author_Id=<?=$listAuthor['Id']?>"><i class="fas fa-times"></i></a>
+                        </td>
+                    </tr>
+                <?php } ?>
+                <tr class="formAddAuthor hidden">
+                    <form action="addAuthor.php?edit=author" method="POST">
+                        <td><input type="text" name="firstname"></td>
+                        <td><input type="text" name="name"></td>
+                        <td>
+                            <button type="submit" class="createButton">Créer</button>
+                        </td>
+                    </form>
+                </tr>
+            </tbody>
+
+        </table>
+</div>
+<div class="blockCategory">
+    
+        <h3 class="noMargin"><a id="addCategory" class="link write big">Ajouter une catégorie</a></h3>
+    
+    <!----------------List Categories--------------->
+
+        <table class='listCategories listAdmin'>
+            <caption>Liste des catégories</caption>
+            <thead>
+                <tr>
+                    <th class='mediumColumn'>Nom de catégorie</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($listCategories as $listCategory) { ?>
+                    <tr>
+                        <td class='mediumColumn'><?= htmlspecialchars($listCategory['Name'])?></td>
+                        <td class='smallColumn borderTop'><a href="deleteArticle.php?Category_Id=<?=$listCategory['Id']?>"><i class="fas fa-times"></i></a></td>
+                    </tr>
+                <?php } ?>
+                <tr class="formAddCategory hidden ">
+                    <form action="addAuthor.php?edit=category" method="POST">
+                        <td><input type="text" name="name"></td>
+                        <td>
+                            <button type="submit" class="createButton">Créer</button>
+                        </td>
+                    </form>
+                </tr>
+            </tbody>
+        </table>
+
+</div>
+
+<!----------------List Users--------------->
+
+    <table class='listUsers listAdmin'>
+        <caption>Liste des utilisateurs</caption>
+        <thead>
+            <tr>
+                <th class='mediumColumn'>Email</th>
+                <th class='mediumColumn'>Nom</th>
+                <th class='mediumColumn'>Prénom</th>
+                <th class='mediumColumn'>Pseudo</th>
+                <th class='mediumColumn'>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($listUsers as $listUser) { ?>
+                <tr>
+                    <td class='mediumColumn'><?= htmlspecialchars($listUser['email'])?></td>
+                    <td class='mediumColumn'><?= htmlspecialchars($listUser['name'])?></td>
+                    <td class='mediumColumn'><?= htmlspecialchars($listUser['firstname'])?></td>
+                    <td class='mediumColumn'><?= htmlspecialchars($listUser['pseudo'])?></td>
+                    <td class='mediumColumn'>
+                        
+                        <form action="admin.php" method="POST">
+                            
+                            <select name="role">
+                                <option value="<?=$listUser['role']?>"><?=$listUser['role']?></option>
+
+                                    <?php if ($listUser['role'] == "admin") { ?>
+                                        <option value="user">user</option>
+                                    <?php } ?>
+
+                                    <?php if ($listUser['role'] == "user") { ?>
+                                        <option value="admin">admin</option>
+                                    <?php } ?> 
+
+                            </select>
+                            <input type="text" name="id" class="hidden" value="<?=$listUser['Id']?>">
+                    </td>
+                    <td class='smallColumn borderTop'>
+                            <button type="submit" id="modifyUser">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                    </td>
+                            
+                    <td class='smallColumn borderTop'><a href="deleteArticle.php?User_Id=<?=$listUser['Id']?>"><i class="fas fa-times"></i></a></td>
+                        </form>
+                        
+                    
+                    
+                </tr>
+            <?php } ?>
+        </tbody>
+
+    </table>
+
+
+
+</main>
+<script src="../JS/admin.js"></script>

@@ -1,0 +1,39 @@
+<main class="container">
+    <h2><i class="far fa-file-alt"></i>Article</h2>
+
+    <h4><?=$infoArticle['Title']?></h4>
+    <p><?=$infoArticle['Contents']?></p>
+    <p>Rédigé par <?=$infoArticle['FirstName'].' '.$infoArticle['LastName']?> le <?=$infoArticle['CreationDate']?></p>
+
+    <div id="divComment">
+        <?php foreach ($infoComments as $infoComment) { ?>
+            <h4><i class="fas fa-comment"></i><?=$infoComment['Pseudo']?></h4>
+            <p><?=$infoComment['Contents']?></p>
+        <?php }  ?>    
+    </div>
+
+    <?php if ($_SESSION != null) { ?>
+        <form action="article.php?Id=<?=$infoArticle['Id']?>" method="POST">
+            <fieldset>
+                <legend><i class="far fa-comment"></i>Nouveau Commentaire</legend>
+                <ul>
+                    <li>
+                        <label for="pseudo" id="pseudo">Pseudo :</label>
+                        <input type="text" name="pseudo">
+                    </li>
+                    <li>
+                        <label for="comment" id="comment">Commentaires :</label>
+                        <textarea id="commentArticle" name="comment"></textarea>
+                    </li>
+                    <li>
+                        <button class="button button_submit" type="submit">Ajouter</button>
+                        <a class="button button_cancel link" href="../index.php">Annuler</a>
+                    </li>
+                </ul>
+            
+            
+            </fieldset>
+        </form>
+    <?php } ?>
+    
+</main>
